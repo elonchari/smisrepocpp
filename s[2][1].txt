@@ -1,0 +1,523 @@
+CENTRAL TENDENCY / MEAN MEDIAN MODE
+
+// Meaure of central tendency => to calcualte mean, mode and median
+ 
+#include <iostream>
+#include <algorithm>
+ 
+using namespace std;
+ 
+// To calculate Mean
+float mean(int arr[], int size)
+{
+ 
+    int sum = 0; // initial sum
+    for (int i = 0; i < size; i++)
+    {
+        sum += arr[i]; // total
+    }
+ 
+    return (float)sum / size; // total / size
+}
+ 
+// To calculate Median
+float median(int arr[], int size)
+{
+    // for even
+    if (size % 2 == 0)
+    {
+        return (float)(arr[size / 2] + arr[(size / 2) - 1]) / 2;
+    }
+    // for odd
+    else
+    {
+        return (float)arr[size / 2];
+    }
+}
+ 
+// To calculate mode
+float mode(int arr[], int size) {
+    // Need at least 2 numbers to have a mode
+    if (size < 2) {
+        return 0;
+    }
+ 
+    int max_count = 1;     // tracks highest frequency seen
+    int current_count = 1; // tracks current number's frequency
+    int mode_value = arr[0];
+ 
+    // Count consecutive equal numbers in sorted array
+    for (int i = 1; i < size; i++) {  // Start from 1, not 0
+        if (arr[i] == arr[i - 1]) {
+            current_count++;
+            if (current_count > max_count) {  // Update mode if current count is higher
+                max_count = current_count;
+                mode_value = arr[i];
+            }
+        } else {
+            current_count = 1;  // Reset count when number changes
+        }
+    }
+ 
+    // Return 0 if no mode exists (no number appears more than once)
+    return (max_count > 1) ? mode_value : 0;
+}
+ 
+int main()
+{
+ 
+    int choice;
+ 
+    do
+    {
+        int size;
+        cout << "Enter the size of your data (0 to exit): ";
+        cin >> size;
+ 
+        if (size == 0)
+            break;
+ 
+        int arr[size];
+        cout << "Enter the data: ";
+ 
+        for (int i = 0; i < size; i++)
+        {
+            cin >> arr[i];
+        }
+ 
+        sort(arr, arr + size);
+ 
+        cout << endl
+             << "Sorted Data: ";
+        for (int i = 0; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+ 
+        cout << "Choose the option: " << endl;
+        cout << "1. Mean \t 2. Median \t 3. Mode \t 4. All \t 0. Exit" << endl;
+ 
+        cout << "Your choice: ";
+        cin >> choice;
+ 
+        switch (choice)
+        {
+        case 1:
+            cout << "Mean : " << mean(arr, size) << endl;
+            break;
+        case 2:
+            cout << "Median : " << median(arr, size) << endl;
+            break;
+        case 3:
+            cout << "Mode : " << mode(arr, size) << endl;
+            break;
+        case 4:
+            cout << "Mean : " << mean(arr, size) << endl;
+            cout << "Median : " << median(arr, size) << endl;
+            cout << "Mode : " << mode(arr, size) << endl;
+            break;
+        case 0:
+            cout << "Program Exit!!!" << endl;
+            break;
+        default:
+            cout << "Invalid Choice. Try Again " << endl;
+        }
+ 
+        cout << endl;
+    } while (choice != 0);
+ 
+    return 0;
+}
+
+
+
+GM / HM
+
+// Program to calculate Geometric Mean and Harmonic Mean
+ 
+#include <iostream>
+#include <algorithm> //for sorting
+#include <cmath>     //for pow
+ 
+using namespace std;
+ 
+// Top calculate Geometric Mean
+float geometricMean(int arr[], int size)
+{
+    float product = 1.0; // initial
+ 
+    // Apply standard formula to understand
+    for (int i = 0; i < size; i++)
+    {
+        product *= arr[i];
+    }
+ 
+    return pow(product, 1.0 / size); // power
+}
+ 
+// Top calculate Harmonic Mean
+float harmonicMean(int arr[], int size)
+{
+    float sum = 0.0; // initial
+ 
+    // Apply standard formula to understand
+    for (int i = 0; i < size; i++)
+    {
+        sum += 1.0 / arr[i];
+    }
+ 
+    return size / sum;
+}
+ 
+int main()
+{
+ 
+    int choice;
+ 
+    do
+    {
+        int size;
+        cout << "Enter the size of your data (0 to exit): ";
+        cin >> size;
+ 
+        if (size == 0)
+            break;
+ 
+        int arr[size];
+        cout << "Enter the data: ";
+ 
+        for (int i = 0; i < size; i++)
+        {
+            cin >> arr[i];
+        }
+ 
+        sort(arr, arr + size);
+ 
+        cout << endl
+             << "Sorted Data: ";
+        for (int i = 0; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+ 
+        cout << "Choose the option: " << endl;
+        cout << "1. Geometric Mean \t 2. Harmonic Mean \t 3. Both \t 0. Exit" << endl;
+ 
+        cout << "Your choice: ";
+        cin >> choice;
+ 
+        switch (choice)
+        {
+        case 1:
+            cout << "Geometric Mean : " << geometricMean(arr, size) << endl;
+            break;
+        case 2:
+            cout << "Harmonic Mean : " << harmonicMean(arr, size) << endl;
+            break;
+        case 3:
+            cout << "Geometric Mean : " << geometricMean(arr, size) << endl;
+            cout << "Harmonic Mean : " << harmonicMean(arr, size) << endl;
+            break;
+        case 0:
+            cout << "Program Exit!!!" << endl;
+            break;
+        default:
+            cout << "Invalid Choice. Try Again " << endl;
+        }
+ 
+        cout << endl;
+    } while (choice != 0);
+ 
+    return 0;
+}
+
+
+
+CHI SQUARE TEST -1
+
+#include <iostream>
+#include <iomanip>
+using namespace std;
+ 
+// Calculate expected frequency
+float calcExpected(float colSum, float rowSum, float grandTotal)
+{
+    return (colSum * rowSum) / grandTotal;
+}
+ 
+// Calculate chi-square value-1
+float chiSquareTest(const float observed[], const float expected[], int size)
+{
+    float chiSquare = 0.0;
+    for (int i = 0; i < size; ++i)
+    {
+        if (expected[i] <= 0) 
+        {
+            cout << "Error: Expected frequency cannot be zero or negative." << endl;
+            return -1;
+        }
+        //formula
+        float difference = observed[i] - expected[i];
+        chiSquare += (difference * difference) / expected[i];
+    }
+    return chiSquare;
+}
+ 
+int main()
+{
+    int numRows, numCols;
+    cout << "Enter the number of rows and columns: ";
+    cin >> numRows >> numCols;
+ 
+    int grandTotal;
+    cout << "Enter the grand total: ";
+    cin >> grandTotal;
+ 
+    float rowSums[numRows], colSums[numCols];
+    cout << "Enter the row sums: ";
+    for (int i = 0; i < numRows; ++i)
+        cin >> rowSums[i];
+ 
+    cout << "Enter the column sums: ";
+    for (int i = 0; i < numCols; ++i)
+        cin >> colSums[i];
+ 
+    int size = numRows * numCols;
+    float observed[size], expected[size];
+ 
+    cout << "Enter the observed frequencies: ";
+    for (int i = 0; i < size; ++i)
+        cin >> observed[i];
+ 
+    // Calculate expected frequencies
+    for (int i = 0, index = 0; i < numRows; ++i)
+    {
+        for (int j = 0; j < numCols; ++j)
+        {
+            expected[index] = calcExpected(colSums[j], rowSums[i], grandTotal);
+            cout << "Expected[" << index << "] = " << expected[index] << endl; // Debug print
+            ++index;
+        }
+    }
+ 
+    // Compute chi-square value
+    float result = chiSquareTest(observed, expected, size);
+ 
+    if (result >= 0)
+        cout << "Chi-square value: " << fixed << setprecision(2) << result << endl;
+    else
+        cout << "Error in calculation" << endl;
+ 
+    return 0;
+}
+
+
+//chi square- 2
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+class ChiSquareTest {
+private:
+    int n, observed[20], expected[20], i;
+    float calculation[20], finalChiSquare, critical;
+
+public:
+    ChiSquareTest() {
+        n = 0;
+        finalChiSquare = 0.0;
+    }
+
+    void getData() {
+        cout << "How many numbers (categories)?" << endl;
+        cin >> n;
+
+        if (n <= 0) {
+            cout << "Number of categories should be greater than 0." << endl;
+            exit(1);
+        }
+
+        cout << "Enter the observed frequencies:" << endl;
+        for (i = 0; i < n; i++) {
+            cout << "Enter " << i + 1 << "th observed frequency: ";
+            cin >> observed[i];
+            if (observed[i] < 0) {
+                cout << "Observed frequencies should not be negative!" << endl;
+                exit(1);
+            }
+        }
+
+        cout << "Enter the expected frequencies:" << endl;
+        for (i = 0; i < n; i++) {
+            cout << "Enter " << i + 1 << "th expected frequency: ";
+            cin >> expected[i];
+            if (expected[i] <= 0) {
+                cout << "Expected frequencies should be positive!" << endl;
+                exit(1);
+            }
+        }
+    }
+
+    void calculate() {
+        for (i = 0; i < n; i++) {
+            calculation[i] = ((observed[i] - expected[i]) * (observed[i] - expected[i])) / expected[i];
+            finalChiSquare += calculation[i];
+        }
+    }
+
+    void display() {
+        cout << setw(5) << "S.No" << setw(15) << "Oi" << setw(15) << "Ei" << setw(30) << "((Oi-Ei)*(Oi-Ei))/Ei" << endl;
+        cout << "---------------------------------------------------------------" << endl;
+        for (i = 0; i < n; i++) {
+            cout << setw(5) << i + 1;
+            cout << setw(15) << observed[i];
+            cout << setw(15) << expected[i];
+            cout << setw(20) << fixed << setprecision(2) << calculation[i] << endl;
+        }
+        cout << "---------------------------------------------------------------" << endl;
+        cout << setw(30) << "Chi-Square Statistic: " << setw(10) << fixed << setprecision(2) << finalChiSquare << endl;
+    }
+
+    void conclusion() {
+        cout << "\nEnter the critical value: ";
+        cin >> critical;
+
+        if (critical <= 0) {
+            cout << "Critical value should be positive!" << endl;
+            exit(1);
+        }
+
+        if (finalChiSquare < critical) {
+            cout << "The test is accepted (null hypothesis is accepted)." << endl;
+        } else {
+            cout << "The test is rejected (null hypothesis is rejected)." << endl;
+        }
+    }
+};
+
+int main() {
+    ChiSquareTest chiTest;
+    chiTest.getData();
+    chiTest.calculate();
+    chiTest.display();
+    chiTest.conclusion();
+    return 0;
+}
+
+
+LINEAR REGRESSION
+
+// Program to calculate linear regression
+ 
+#include <iostream>
+#include <vector>
+#include <iomanip>
+ 
+using namespace std;
+ 
+int main()
+{
+    // get number of datapoints
+    int n;
+    cout << "Enter the number of datapoints: ";
+    cin >> n;
+ 
+    // declare vectors for x and y values
+    vector<float> x(n), y(n);
+ 
+    // input for data points
+    cout << "Enter x and y values: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cout << "x[" << (i + 1) << "] : ";
+        cin >> x[i];
+        cout << "y[" << (i + 1) << "] : ";
+        cin >> y[i];
+    }
+ 
+    // calculate sums
+    float sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sumX += x[i];
+        sumY += y[i];
+        sumXY += x[i] * y[i];
+        sumX2 += x[i] * x[i];
+    }
+ 
+    // Calculate slope (m) and intercept (c)
+    float m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    float c = (sumY - m * sumX) / n;
+ 
+    // Display the result with fixed precision
+    cout << fixed << setprecision(4);
+    cout << "The linear regression equation is: y = " << m << "x + " << c << endl;
+ 
+    // Predict y for a given value of x
+    float xPredict;
+    cout << "Enter a value of x to predict y: ";
+    cin >> xPredict;
+ 
+    float yPredict = m * xPredict + c;
+    cout << "Predicted y value for x = " << xPredict << " is: " << yPredict << endl;
+ 
+    return 0;
+}
+
+
+//SD
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <numeric>
+
+using namespace std;
+
+// Function to calculate the standard deviation
+double calculate_standard_deviation(const vector<double>& data) {
+    // Calculate the mean
+    double mean = accumulate(data.begin(), data.end(), 0.0) / data.size();
+
+    // Calculate the squared differences from the mean
+    double sum_of_squared_diffs = 0.0;
+    for (double num : data) {
+        sum_of_squared_diffs += pow(num - mean, 2);
+    }
+
+    // Calculate the variance
+    double variance = sum_of_squared_diffs / data.size();
+
+    // Return the standard deviation (square root of the variance)
+    return sqrt(variance);
+}
+
+int main() {
+    int n;
+
+    // Ask for the number of elements in the data set
+    cout << "Enter the number of elements: ";
+    cin >> n;
+
+    vector<double> data(n);
+
+    // Get the data from the user
+    cout << "Enter " << n << " numbers: ";
+    for (int i = 0; i < n; i++) {
+        cin >> data[i];
+    }
+
+    // Calculate standard deviation
+    double std_dev = calculate_standard_deviation(data);
+
+    // Output the result
+    cout << "Standard Deviation: " << std_dev << endl;
+
+    return 0;
+}
+
+
+
+//
